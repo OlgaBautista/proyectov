@@ -8,19 +8,7 @@ if (empty($_SESSION["id"])) {
 ?>
 <?php
 
-$usuario = "root";
-$password = "";
-$servidor = "localhost";
-$basededatos = "inventariov";
-
-
-$conexion = mysqli_connect($servidor, $usuario, "") or die("Error con el servidor de la Base de datos");
-
-
-$db = mysqli_select_db($conexion, $basededatos) or die("Error conexion al conectarse a la Base de datos");
-
-
-$conexion->set_charset("utf8");
+include "conexion.php";
 
 ?>
 

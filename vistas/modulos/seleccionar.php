@@ -12,7 +12,7 @@ if (empty($_SESSION["id"])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio</title>
+  <title>Pagina de Inicio</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -34,62 +34,9 @@ if (empty($_SESSION["id"])) {
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
 
-<style>
-  @media (max-width: 767px) {
-
-    .row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .col-6 {
-      -ms-flex: 0 0 50%;
-      flex: 0 0 50%;
-      max-width: 80%;
-    }
-
-
-  }
-
-  @media (max-width: 1330px) {
-
-    .small-box>.inner {
-    padding: 1rem;
-    max-height: 114px;
-}
-
-}
-  #inv-color {
-
-    background-color: #F09950;
-
-  }
-
-  .icon {
-    padding: 7px;
-  }
-
-  a.small-box-footer {
-    height: 6rem;
-    display: flex;
-    align-content: center;
-  }
-
-   #p-color{
-    background-color: #059A96;
-   }
-
-   #c-color{
-    background-color: #E48F11;
-   }
-   #d-color{
-    background-color: #67067D;
-   }
-
-</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -259,7 +206,7 @@ if (empty($_SESSION["id"])) {
               <!-- small box -->
               <div class="small-box" id="c-color">
                 <div class="inner">
-                  <h3>Calculadora</h3>
+                  <h3>Ventas</h3>
 
                   <p>Reporte Venta</p>
                 </div>
