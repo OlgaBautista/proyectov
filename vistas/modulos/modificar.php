@@ -82,19 +82,19 @@ $sql = $conexion->query("select * from altas where id=$id ");
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
-      <a href="../../index3.html" class="brand-link">
-        <img src="http://127.0.0.1/proyectov/vistas/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+     <!-- Brand Logo -->
+     <a href="index3.html" class="brand-link">
+        <img src="http://127.0.0.1/proyectov/vistas/imagen/tienda.png" alt="AdminLTE Logo"
           class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">¡Bienvenido!</span>
       </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
-        <!-- Sidebar user (optional) -->
+        <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="http://127.0.0.1/proyectov/vistas/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
+            <img src="http://127.0.0.1/proyectov/vistas/imagen/icon1.png" class="img-circle elevation-2"
               alt="User Image">
           </div>
           <div class="info">
@@ -114,7 +114,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
                 <i class="nav-icon far fa-calendar-alt"></i>
                 <p>
                   Sobre Nosotros
-                  <span class="badge badge-info right">2</span>
+                  <span class="badge badge-info right"></span>
                 </p>
               </a>
             </li>
@@ -143,18 +143,12 @@ $sql = $conexion->query("select * from altas where id=$id ");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
+      <!-- Main content -->
       <section class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>General Form</h1>
-            </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">General Form</li>
-              </ol>
+              <h1>Modificar producto</h1>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -169,7 +163,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Quick Example</h3>
+                  <h3 class="card-title">Formulario</h3>
                 </div>
                 <input type="hidden" name="id" value="<?= $_GET["id"] ?>">
                 <?php
