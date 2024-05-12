@@ -40,6 +40,10 @@
     align-content: center;
   }
 
+  #r-color {
+    background-color: #216974;
+  }
+
    #p-color{
     background-color: #059A96;
    }
@@ -49,5 +53,9 @@
    }
    #d-color{
     background-color: #67067D;
+   }
+
+   div#r-color {
+    background-color: #216974;
    }
 

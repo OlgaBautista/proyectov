@@ -2,10 +2,20 @@
 session_start();
 
 if (empty($_SESSION["id"])) {
-  header("location: http://127.0.0.1/proyectov/");
+    header("location: http://127.0.0.1/proyectov/");
+    exit(); // Agregamos exit para detener la ejecución del script
 }
 
+include "conexion.php";
+
+// Obtener el rol del usuario
+$usuario_id = $_SESSION["id"];
+$sql = "SELECT rol FROM productos WHERE id = $usuario_id";
+$resultado = $conexion->query($sql);
+$datos_usuario = $resultado->fetch_assoc();
+$rol_usuario = $datos_usuario["rol"];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,7 +105,7 @@ if (empty($_SESSION["id"])) {
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item menu-open">
-            <li class="nav-header">EXAMPLES</li>
+            <li class="nav-header">Menú</li>
             <li class="nav-item">
               <a href="pages/calendar.html" class="nav-link">
                 <i class="nav-icon far fa-calendar-alt"></i>
@@ -135,13 +145,11 @@ if (empty($_SESSION["id"])) {
           <div class="row mb-2">
             <div class="col-sm-6">
               <h1 class="m-0">Menú</h1>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- /.content-header -->
 
-      <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
@@ -161,6 +169,7 @@ if (empty($_SESSION["id"])) {
               </div>
             </div>
             <!-- ./col -->
+            <?php if ($rol_usuario === 'Administrador' || $rol_usuario === 'Usuario') { ?>
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="p-color">
@@ -176,6 +185,8 @@ if (empty($_SESSION["id"])) {
                   aqui <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            <?php } ?>
+            
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
@@ -193,13 +204,14 @@ if (empty($_SESSION["id"])) {
               </div>
             </div>
             <!-- ./col -->
+            <?php if ($rol_usuario === 'Administrador' || $rol_usuario === 'Usuario') { ?>
+
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="d-color">
                 <div class="inner">
-                  <h3>65</h3>
-
-                  <p>Unique Visitors</p>
+                  <h3>Prestamo</h3>
+                  <p>Administre sus prestamos</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
@@ -208,12 +220,34 @@ if (empty($_SESSION["id"])) {
               </div>
             </div>
 
+            <?php } ?>
+
+            <style>
+              div#r-color {
+                background-color: #216974;
+              }
+            </style>
+
+              <?php if ($rol_usuario === 'Administrador') { ?>
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box" id="r-color">
+                <div class="inner">
+                  <h3>Registro</h3>
+
+                  <p>Dar de alta usuarios </p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+               <?php } ?>
+
           </div>
-        </div><!-- /.container-fluid -->
       </section>
-      <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
     <footer class="main-footer">
       <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los
       derechos reservados.
@@ -222,13 +256,8 @@ if (empty($_SESSION["id"])) {
       </div>
     </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
   </div>
-  <!-- ./wrapper -->
 
   <!-- jQuery -->
   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>

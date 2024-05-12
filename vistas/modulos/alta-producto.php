@@ -2,14 +2,19 @@
 session_start();
 
 if (empty($_SESSION["id"])) {
-  header("location: http://127.0.0.1/proyectov/");
+    header("location: http://127.0.0.1/proyectov/");
+    exit(); // Agregamos exit para detener la ejecución del script
 }
 
-?>
-<?php
-
+// Incluir archivo de conexión
 include "conexion.php";
 
+// Obtener el rol del usuario
+$usuario_id = $_SESSION["id"];
+$sql = "SELECT rol FROM productos WHERE id = $usuario_id";
+$resultado = $conexion->query($sql);
+$datos_usuario = $resultado->fetch_assoc();
+$rol_usuario = $datos_usuario["rol"];
 ?>
 
 <!DOCTYPE html>
@@ -195,6 +200,7 @@ if (!empty($_GET["id"])) {
                     <th>Stock</th>
                     <th>Codigo</th>
                     <th></th>
+                
             
                   </tr>
                   </thead>
@@ -210,12 +216,15 @@ if (!empty($_GET["id"])) {
                     <td><?= $datos->precio?></td>
                     <td><?= $datos->stock?></td>
                     <td><?= $datos->codigo?></td>
-                    <td>
+                     <?php if ($rol_usuario === 'Administrador') { ?> 
+                      <td>
                         <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="http://127.0.0.1/proyectov/vistas/modulos/alta-producto.php?id=<?= $datos->id?>" class="btn btn-small btn-danger"><i class="fa-regular fa-rectangle-xmark"></i></a>
-                    </td>
-                    
+                      <?php } ?>
+                      </td>
+               
                   </tr>
+                  
                   <?php }
 
                   ?>
