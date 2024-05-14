@@ -153,6 +153,7 @@ if (empty($_SESSION["id"])) {
                                       
                                                     // Realizar aquí las operaciones necesarias con los datos recibidos
                                                     // Por ejemplo, insertar la tabla en la base de datos o realizar algún otro procesamiento
+                                                    
                                                     // También puedes guardar el total acumulado en la base de datos si es necesario
                                       
                                                     // Imprimir la tabla HTML recibida y el total acumulado

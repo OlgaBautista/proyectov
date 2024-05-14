@@ -168,34 +168,29 @@ include "conexion.php";
                     <div class="form-group">
                       <label for="exampleInputEmail1">Usuario</label>
                       <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa usuario"
-                        name="categoria">
+                        name="usuario">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Clave</label>
                       <input type="text" class="form-control" id="exampleInputEmail1"
-                        placeholder="Ingresa clave" name="nombre">
+                        placeholder="Ingresa clave" name="clave">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Nombre</label>
                       <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa nombre"
-                        name="precio">
+                        name="nombre">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Apellido</label>
                       <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa apellido"
-                        name="stock">
+                        name="apellido">
                     </div>
                     <div class="form-group">
                       <label>Selecciona Rol</label>
-                      <select class="form-control input-group-sm" id="productoVenta" name="productoVenta">
-                        <option value="">Selecciona</option>
-                        <?php
-                        // Consulta para obtener la lista de productos
-                        $sql = $conexion->query("SELECT * FROM productos");
-                        while ($usuario1 = $sql->fetch_object()) {
-                          echo "<option value='" . $usuario1->id . "'>" . $usuario1->rol . "</option>";
-                        }
-                        ?>
+                      <select class="form-control input-group-sm" id="rol" name="rol">
+                        <option value="6">Administrador</option>
+                        <option value="7">Usuario</option>
+                        <option value="8">Consultor</option>
                       </select>
                     </div>
                     <div class="card-footer">
@@ -212,7 +207,7 @@ include "conexion.php";
                         $apellido = $_POST["apellido"];
                         $rol = $_POST["rol"];
 
-                        $sql = $conexion->query("insert into altas(usuario,clave,nombre,apellido,rol)values('$usuario','$clave','$nombre','$apellido','$rol' ) ");
+                        $sql = $conexion->query("insert into productos(usuario,clave,nombre,apellido,rol)values('$usuario','$clave','$nombre','$apellido','$rol' ) ");
                         if ($sql) {
                           echo '<div class="alert alert-success">Producto registrado correctamente</div>';
                           # code...

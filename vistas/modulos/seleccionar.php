@@ -34,7 +34,6 @@ $rol_usuario = $datos_usuario["rol"];
   <link rel="stylesheet"
     href="http://127.0.0.1/proyectov/vistas/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
@@ -46,7 +45,6 @@ $rol_usuario = $datos_usuario["rol"];
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
   <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
-
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -169,7 +167,7 @@ $rol_usuario = $datos_usuario["rol"];
               </div>
             </div>
             <!-- ./col -->
-            <?php if ($rol_usuario === 'Administrador' || $rol_usuario === 'Usuario') { ?>
+            <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="p-color">
@@ -204,7 +202,7 @@ $rol_usuario = $datos_usuario["rol"];
               </div>
             </div>
             <!-- ./col -->
-            <?php if ($rol_usuario === 'Administrador' || $rol_usuario === 'Usuario') { ?>
+            <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
 
             <div class="col-lg-3 col-6">
               <!-- small box -->
@@ -228,7 +226,7 @@ $rol_usuario = $datos_usuario["rol"];
               }
             </style>
 
-              <?php if ($rol_usuario === 'Administrador') { ?>
+              <?php if ($rol_usuario === '6') { ?>
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="r-color">
