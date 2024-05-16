@@ -8,19 +8,7 @@ if (empty($_SESSION["id"])) {
 ?>
 <?php
 
-$usuario = "root";
-$password = "";
-$servidor = "localhost";
-$basededatos = "inventariov";
-
-
-$conexion = mysqli_connect($servidor, $usuario, "") or die("Error con el servidor de la Base de datos");
-
-
-$db = mysqli_select_db($conexion, $basededatos) or die("Error conexion al conectarse a la Base de datos");
-
-
-$conexion->set_charset("utf8");
+include "conexion.php";
 
 ?>
 
@@ -30,27 +18,33 @@ $conexion->set_charset("utf8");
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | DataTables</title>
+  <title>Pagina de Inicio</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet"
-    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet"
-    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet"
-    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    href="http://127.0.0.1/proyectov/vistas/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
-  <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
-
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet"
+    href="http://127.0.0.1/proyectov/vistas/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
 
-<body class="hold-transition sidebar-mini">
+
+<body class="hold-transition sidebar-mini layout-fixed">
 
   <div class="wrapper">
 
@@ -76,33 +70,8 @@ $conexion->set_charset("utf8");
       <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-          </a>
-          <div class="navbar-search-block">
-            <form class="form-inline">
-              <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-            <i class="fas fa-th-large"></i>
           </a>
         </li>
       </ul>
@@ -113,7 +82,7 @@ $conexion->set_charset("utf8");
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-        <img src="http://127.0.0.1/proyectov/vistas/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+        <img src="http://127.0.0.1/proyectov/vistas/imagen/tienda.png" alt="AdminLTE Logo"
           class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">¡Bienvenido!</span>
       </a>
@@ -123,7 +92,7 @@ $conexion->set_charset("utf8");
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="http://127.0.0.1/proyectov/vistas/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
+            <img src="http://127.0.0.1/proyectov/vistas/imagen/icon1.png" class="img-circle elevation-2"
               alt="User Image">
           </div>
           <div class="info">
@@ -173,7 +142,7 @@ $conexion->set_charset("utf8");
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Alta de Producto</h1>
+              <h1>Reporte de Venta</h1>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -193,7 +162,7 @@ $conexion->set_charset("utf8");
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form id="frmVentasProductos" method="POST">
+                <form id="frmVentasProductos" action="registros_ventas.php" method="POST">
                   <div class="card-body">
                     <!-- Tu formulario aquí -->
                     <div class="form-group">
@@ -224,7 +193,14 @@ $conexion->set_charset("utf8");
                         name="cantidadV">
                     </div>
                     <div class="card-footer">
-                      <button id="btnEnviar" type="button" class="btn btn-primary">Enviar</button>
+                      <!--BOTON DE ENVIAR-->
+                      <button id="btnEnviar" class="btn btn-primary" type="button">Enviar</button>
+                      <!-- BOTÓN PARA ENVIAR LA TABLA -->
+                      <button id="btnEnviarTabla" class="btn btn-secondary" type="button">Enviar Tabla</button>
+
+                      <!-- Agrega un campo oculto para enviar la tabla y la sumatoria -->
+                      <input type="hidden" id="tablaHTML" name="tablaHTML">
+                      <input type="hidden" id="totalAcumuladoInput" name="totalAcumulado">
                     </div>
 
                   </div>
@@ -235,7 +211,7 @@ $conexion->set_charset("utf8");
 
             <!-- Columna para la tabla -->
             <div class="col-md-6">
-              <div id="tablaDatos" class="card">
+              <div id="tablaMostrar" class="card">
                 <div class="card-header">
                   <h3 class="card-title">Tabla de Productos</h3>
                 </div>
@@ -248,8 +224,16 @@ $conexion->set_charset("utf8");
                         <th>Código</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
+                        <th></th>
                       </tr>
                     </thead>
+                  </table>
+
+                  <div id="totalAcumuladoDiv">
+                    <label>Total acumulado: </label>
+                    <span id="total">0.00</span>
+                  </div>
+
                 </div>
 
                 <div>
@@ -257,6 +241,9 @@ $conexion->set_charset("utf8");
                   <script>
 
                     $(document).ready(function () {
+                      // Variable para almacenar el total acumulado
+                      var totalAcumulado = 0;
+
                       // Autollenado de campos al cargar la página
                       $('#productoVenta').change(function () {
                         // Obtener el ID del producto seleccionado
@@ -271,7 +258,7 @@ $conexion->set_charset("utf8");
                             // Actualizar los campos con los datos obtenidos
                             $('#codigoV').val(data.codigo);
                             $('#precioV').val(data.precio);
-                            $('#cantidadV').val(data.cantidad);
+                            $('#cantidadV').val(''); // Limpiar el campo de cantidad al autollenar otros campos
                           },
                           error: function (xhr, status, error) {
                             console.error(xhr.responseText);
@@ -281,33 +268,64 @@ $conexion->set_charset("utf8");
 
                       // Envío de datos al hacer clic en el botón "Enviar"
                       $('#btnEnviar').click(function () {
-                        // Obtener el ID del producto seleccionado
-                        var idProducto = $('#productoVenta').val();
-                        // Realizar una solicitud AJAX para obtener los datos del producto
-                        $.ajax({
-                          url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
-                          type: 'POST',
-                          data: { idProducto: idProducto },
-                          dataType: 'json',
-                          success: function (data) {
-                            // Construir la fila con los datos recibidos
-                            var fila = '<tr>';
-                            fila += '<td>' + data.nombre + '</td>';
-                            fila += '<td>' + data.codigo + '</td>';
-                            fila += '<td>' + data.precio + '</td>';
-                            fila += '<td>' + data.cantidad + '</td>';
-                            fila += '</tr>';
-                            // Agregar la fila a la tabla
-                            $('#tablaDatos table').append(fila);
-                          },
-                          error: function () {
-                            alert('Error al obtener los datos del producto.');
-                          }
-                        });
+                        // Obtener los valores ingresados manualmente por el usuario
+                        var nombre = $('#productoVenta option:selected').text();
+                        var codigo = $('#codigoV').val();
+                        var precio = parseFloat($('#precioV').val()); // Convertir el precio a número
+                        var cantidad = parseInt($('#cantidadV').val()); // Convertir la cantidad a número
+
+                        // Calcular el subtotal del producto
+                        var subtotal = precio * cantidad;
+
+                        // Actualizar el total acumulado
+                        totalAcumulado += subtotal;
+
+                        // Mostrar el total acumulado
+                        $('#total').text(totalAcumulado.toFixed(2));
+
+                        // Construir la fila con los datos ingresados manualmente por el usuario
+                        var fila = '<tr>';
+                        fila += '<td>' + nombre + '</td>';
+                        fila += '<td>' + codigo + '</td>';
+                        fila += '<td>' + precio.toFixed(2) + '</td>';
+                        fila += '<td>' + cantidad + '</td>';
+                        fila += '<td><button class="btn btn-danger btn-sm btnEliminarFila">Borrar</button></td>';
+                        fila += '</tr>';
+                        // Agregar la fila a la tabla
+                        $('#tablaMostrar table').append(fila);
+
+                        // Limpiar los campos después de la inserción
+                        $('#cantidadV').val('');
+
+                        // Actualizar el valor del campo oculto con el HTML de la tabla
+                        $('#tablaHTML').val($('#tablaMostrar').html());
+                      });
+
+                      // Envío de tabla y sumatoria al hacer clic en el botón "Enviar Tabla"
+                      $('#btnEnviarTabla').click(function () {
+                        // Actualizar el valor del campo oculto con el HTML de la tabla
+                        $('#tablaHTML').val($('#tablaMostrar').html());
+                        // Actualizar el valor del campo oculto con la sumatoria
+                        $('#totalAcumuladoInput').val(totalAcumulado.toFixed(2));
+                        // Enviar el formulario
+                        $('#frmVentasProductos').submit();
                       });
                     });
 
                   </script>
+
+                  <script>
+                    // Evento de clic para el botón "borrar"
+                    $('body').on('click', '.btnEliminarFila', function () {
+                      // Obtener la fila a la que pertenece el botón
+                      var fila = $(this).closest('tr');
+
+                      fila.remove();
+                      // Actualizar el valor del campo oculto con el HTML de la tabla
+                      $('#tablaHTML').val($('#tablaMostrar').html());
+                    });
+                  </script>
+
 
                   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
                   <script src="http://127.0.0.1/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -333,9 +351,6 @@ $conexion->set_charset("utf8");
                     src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
                   <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
 
-                  <script>
-
-                  </script>
                 </div>
               </div>
             </div>
@@ -346,16 +361,16 @@ $conexion->set_charset("utf8");
         <!-- /.card -->
 
     </div>
-
   </div>
   </div>
   </div>
   </div><!-- /.container-fluid -->
+
   </section>
+
+  </div>
   </div>
 
-  <aside class="control-sidebar control-sidebar-dark"></aside>
-  </div>
 </body>
 
 </html>
