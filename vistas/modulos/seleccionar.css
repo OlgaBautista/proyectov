@@ -24,12 +24,7 @@
 }
 
 }
-  #inv-color {
-
-    background-color: #F09950;
-
-  }
-
+  
   .icon {
     padding: 7px;
   }
@@ -40,22 +35,39 @@
     align-content: center;
   }
 
-  #r-color {
-    background-color: #216974;
+  #inv-color {
+
+  background-color: #F09950;
+
+
   }
 
-   #p-color{
+  #p-color{
     background-color: #059A96;
+
    }
 
+  
    #c-color{
     background-color: #E48F11;
+  
    }
+
+   
+
    #d-color{
     background-color: #67067D;
    }
 
+
+  #r-color {
+    background-color: #216974;
+  }  
+   
+
    div#r-color {
     background-color: #216974;
    }
+s
+
 

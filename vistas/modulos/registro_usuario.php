@@ -40,6 +40,7 @@ include "conexion.php";
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
+  <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
 

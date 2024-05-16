@@ -2,19 +2,14 @@
 session_start();
 
 if (empty($_SESSION["id"])) {
-    header("location: http://127.0.0.1/proyectov/");
-    exit(); // Agregamos exit para detener la ejecución del script
+  header("location: http://127.0.0.1/proyectov/");
 }
 
-// Incluir archivo de conexión
+?>
+<?php
+
 include "conexion.php";
 
-// Obtener el rol del usuario
-$usuario_id = $_SESSION["id"];
-$sql = "SELECT rol FROM productos WHERE id = $usuario_id";
-$resultado = $conexion->query($sql);
-$datos_usuario = $resultado->fetch_assoc();
-$rol_usuario = $datos_usuario["rol"];
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +30,6 @@ $rol_usuario = $datos_usuario["rol"];
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
   <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
-   <link rel="stylesheet" type="text/css" href="seleccionar.css">
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -199,41 +193,41 @@ if (!empty($_GET["id"])) {
                   <thead>
                   <tr class="bg-black">
                     <th>Id</th>
-                    <th>Categoria</th>
                     <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
                     <th>Codigo</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Fecha y Hora</th>
                     <th></th>
-            
                   </tr>
                   </thead>
                   <tbody>
                     <?php
-                    $sql = $conexion->query(" select * from altas ");
-                    while ($datos = $sql->fetch_object()) { ?>
-
+                    $sumaTotal = 0; // Inicializamos la variable para almacenar la suma total
+                    $sql = $conexion->query(" select * from ventas ");
+                    while ($datos = $sql->fetch_object()) { 
+                      // Sumamos el precio del producto al total
+                      $sumaTotal += $datos->precio * $datos->cantidad;
+                    ?>
                    <tr>
                     <td><?= $datos->id?></td>
-                    <td><?= $datos->categoria?></td>
                     <td><?= $datos->nombre?></td>
-                    <td><?= $datos->precio?></td>
-                    <td><?= $datos->stock?></td>
                     <td><?= $datos->codigo?></td>
-                    <td>
-                        <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="http://127.0.0.1/proyectov/vistas/modulos/alta-producto.php?id=<?= $datos->id?>" class="btn btn-small btn-danger"><i class="fa-regular fa-rectangle-xmark"></i></a>
-                    </td>
-                    
+                    <td><?= $datos->precio?></td>
+                    <td><?= $datos->cantidad?></td>
+                    <td><?= $datos->fecha_hora?></td>
+                     <td>
+                   <button onclick="eliminarProducto(<?= $datos->id ?>)" class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
+                     </td>
                   </tr>
                   <?php }
 
                   ?>
                   
-                  
                   </tbody>
-           
                 </table>
+                <!-- Mostramos el total fuera del bucle -->
+                <div>Total: $<?= $sumaTotal ?></div>
               </div>
             </div>
           </div>
@@ -283,6 +277,26 @@ if (!empty($_GET["id"])) {
       "responsive": true,
     });
   });
+
+  function eliminarProducto(id) {
+    if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+        // Realiza una petición AJAX para eliminar el producto
+        $.ajax({
+            url: 'eliminar_producto.php', // Ruta al archivo PHP para eliminar el producto
+            method: 'GET',
+            data: { id: id }, // ID del producto a eliminar
+            success: function(response) {
+                // Si se elimina correctamente, recarga la página actual
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                // Si hay un error, muestra un mensaje de error
+                console.error(error);
+                alert("Error al eliminar el producto.");
+            }
+        });
+    }
+}
 </script>
 </body>
 </html>
