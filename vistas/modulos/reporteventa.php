@@ -236,6 +236,8 @@ include "conexion.php";
                 </div>
                 <div class="card-body">
                   <!-- Tu tabla aquí -->
+                  <div style="overflow-x:auto;">
+
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr class="bg-black">
@@ -248,6 +250,9 @@ include "conexion.php";
                       </tr>
                     </thead>
                   </table>
+
+                  </div>
+
 
                   <div id="totalAcumuladoDiv">
                     <label>Total acumulado: </label>

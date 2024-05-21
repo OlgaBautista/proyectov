@@ -68,7 +68,6 @@ include "conexion.php";
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
@@ -76,7 +75,6 @@ include "conexion.php";
         </li>
       </ul>
     </nav>
-    <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -131,9 +129,7 @@ include "conexion.php";
             </li>
           </ul>
         </nav>
-        <!-- /.sidebar-menu -->
       </div>
-      <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
@@ -146,7 +142,7 @@ include "conexion.php";
               <h1>Alta de Producto</h1>
             </div>
           </div>
-        </div><!-- /.container-fluid -->
+        </div>
       </section>
 
       <!-- Main content -->
@@ -155,13 +151,11 @@ include "conexion.php";
           <div class="row">
             <!-- left column -->
             <div class="col-md-6">
-              <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
                   <h3 class="card-title">Formulario</h3>
 
                 </div>
-                <!-- /.card-header -->
                 <!-- form start -->
                 <form method="POST">
                   <div class="card-body">
@@ -226,22 +220,15 @@ include "conexion.php";
           </div>
           </form>
         </div>
-        <!-- /.card -->
 
     </div>
 
-    <!-- /.card-body -->
   </div>
-  <!-- /.card -->
   </div>
-  <!--/.col (right) -->
   </div>
-  <!-- /.row -->
-  </div><!-- /.container-fluid -->
+  </div>
   </section>
-  <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.2.0
@@ -250,11 +237,8 @@ include "conexion.php";
     derechos reservados.
   </footer>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
   </aside>
-  <!-- /.control-sidebar -->
   </div>
 
   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
@@ -275,9 +259,6 @@ include "conexion.php";
   <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
   <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
 
-  <script>
-
-  </script>
 </body>
 
 </html>
