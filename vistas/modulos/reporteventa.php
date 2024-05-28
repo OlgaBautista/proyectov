@@ -186,7 +186,7 @@ include "conexion.php";
                     <!-- Tu formulario aquí -->
                     <div class="form-group">
                       <label>Selecciona Producto</label>
-                      <select class="form-control input-group-sm" id="productoVenta" name="productoVenta">
+                      <select class="form-control input-group-sm" id="productoVenta" name="productoVenta" required>
                         <option value="">Selecciona</option>
                         <?php
                         // Consulta para obtener la lista de productos
@@ -199,17 +199,17 @@ include "conexion.php";
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Codigo</label>
-                      <input type="text" class="form-control" id="codigoV" placeholder="Ingresa precio" name="codigoV">
+                      <input type="text" class="form-control" id="codigoV" placeholder="Ingresa precio" name="codigoV" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Precio</label>
                       <input type="text" class="form-control" id="precioV" placeholder="Ingresa cantidad"
-                        name="precioV">
+                        name="precioV" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Cantidad</label>
                       <input type="text" class="form-control" id="cantidadV" placeholder="Ingresa codigo"
-                        name="cantidadV">
+                        name="cantidadV" required>
                     </div>
                     <div class="card-footer">
                       <!--BOTON DE ENVIAR-->
@@ -220,7 +220,11 @@ include "conexion.php";
                       <!-- Agrega un campo oculto para enviar la tabla y la sumatoria -->
                       <input type="hidden" id="tablaHTML" name="tablaHTML">
                       <input type="hidden" id="totalAcumuladoInput" name="totalAcumulado">
+                      
                     </div>
+
+                    <div id="mensajeError" class="alert alert-danger" style="display: none;"></div>
+
 
                   </div>
                 </form>
@@ -236,9 +240,8 @@ include "conexion.php";
                 </div>
                 <div class="card-body">
                   <!-- Tu tabla aquí -->
-                  <div style="overflow-x:auto;">
+                  <table id="tablaProductos" class="table table-bordered table-striped">
 
-                  <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr class="bg-black">
                         <th>Nombre</th>
@@ -250,9 +253,6 @@ include "conexion.php";
                       </tr>
                     </thead>
                   </table>
-
-                  </div>
-
 
                   <div id="totalAcumuladoDiv">
                     <label>Total acumulado: </label>
@@ -266,100 +266,107 @@ include "conexion.php";
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   $(document).ready(function () {
-    // Variable para almacenar el total acumulado
-    var totalAcumulado = 0;
+  // Variable para almacenar el total acumulado
+  var totalAcumulado = 0;
 
-    // Autollenado de campos al cargar la página
-    $('#productoVenta').change(function () {
-      // Obtener el ID del producto seleccionado
-      var idProducto = $(this).val();
-      // Realizar una solicitud AJAX para obtener los detalles del producto
-      $.ajax({
-        url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
-        method: 'POST',
-        data: { idProducto: idProducto },
-        dataType: 'json',
-        success: function (data) {
-          // Actualizar los campos con los datos obtenidos
-          $('#codigoV').val(data.codigo);
-          $('#precioV').val(data.precio);
-          $('#cantidadV').val(''); // Limpiar el campo de cantidad al autollenar otros campos
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr.responseText);
-        }
-      });
-    });
-
-    // Envío de datos al hacer clic en el botón "Enviar"
-    $('#btnEnviar').click(function () {
-      // Obtener los valores ingresados manualmente por el usuario
-      var nombre = $('#productoVenta option:selected').text();
-      var codigo = $('#codigoV').val();
-      var precio = parseFloat($('#precioV').val()); // Convertir el precio a número
-      var cantidad = parseInt($('#cantidadV').val()); // Convertir la cantidad a número
-
-      // Calcular el subtotal del producto
-      var subtotal = precio * cantidad;
-
-      // Actualizar el total acumulado
-      totalAcumulado += subtotal;
-
-      // Obtener la fecha y hora actual
-      var now = new Date();
-      var fechaHora = now.toLocaleString();
-
-      // Mostrar el total acumulado
-      $('#total').text(totalAcumulado.toFixed(2));
-
-      // Construir la fila con los datos ingresados manualmente por el usuario
-      var fila = '<tr>';
-      fila += '<td>' + nombre + '</td>';
-      fila += '<td>' + codigo + '</td>';
-      fila += '<td>' + precio.toFixed(2) + '</td>';
-      fila += '<td>' + cantidad + '</td>';
-      fila += '<td>' + fechaHora + '</td>';
-      fila += '<td><button class="btn btn-danger btn-sm btnEliminarFila">Borrar</button></td>';
-      fila += '</tr>';
-      // Agregar la fila a la tabla
-      $('#tablaMostrar table').append(fila);
-
-      // Limpiar los campos después de la inserción
-      $('#cantidadV').val('');
-
-      // Actualizar el valor del campo oculto con el HTML de la tabla
-      $('#tablaHTML').val($('#tablaMostrar').html());
-    });
-
-    // Envío de tabla y sumatoria al hacer clic en el botón "Enviar Tabla"
-    $('#btnEnviarTabla').click(function () {
-      // Actualizar el valor del campo oculto con el HTML de la tabla
-      $('#tablaHTML').val($('#tablaMostrar').html());
-      // Actualizar el valor del campo oculto con la sumatoria
-      $('#totalAcumuladoInput').val(totalAcumulado.toFixed(2));
-      // Enviar el formulario
-      $('#frmVentasProductos').submit();
-    });
-
-    // Evento de clic para el botón "borrar"
-    $('body').on('click', '.btnEliminarFila', function () {
-      // Obtener la fila a la que pertenece el botón
-      var fila = $(this).closest('tr');
-      // Obtener el precio y la cantidad de la fila que se va a eliminar
-      var precio = parseFloat(fila.find('td:eq(2)').text());
-      var cantidad = parseInt(fila.find('td:eq(3)').text());
-      // Calcular el subtotal de la fila
-      var subtotal = precio * cantidad;
-      // Restar el subtotal de la fila eliminada al total acumulado
-      totalAcumulado -= subtotal;
-      // Actualizar el total acumulado mostrado
-      $('#total').text(totalAcumulado.toFixed(2));
-      // Eliminar la fila
-      fila.remove();
-      // Actualizar el valor del campo oculto con el HTML de la tabla
-      $('#tablaHTML').val($('#tablaMostrar').html());
+  // Autollenado de campos al cargar la página
+  $('#productoVenta').change(function () {
+    // Obtener el ID del producto seleccionado
+    var idProducto = $(this).val();
+    // Realizar una solicitud AJAX para obtener los detalles del producto
+    $.ajax({
+      url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
+      method: 'POST',
+      data: { idProducto: idProducto },
+      dataType: 'json',
+      success: function (data) {
+        // Actualizar los campos con los datos obtenidos
+        $('#codigoV').val(data.codigo);
+        $('#precioV').val(data.precio);
+        $('#cantidadV').val(''); // Limpiar el campo de cantidad al autollenar otros campos
+      },
+      error: function (xhr, status, error) {
+        console.error(xhr.responseText);
+      }
     });
   });
+
+  // Envío de datos al hacer clic en el botón "Enviar"
+  $('#btnEnviar').click(function () {
+    // Validar que todos los campos estén llenos
+    if ($('#productoVenta').val() === '' || $('#codigoV').val() === '' || $('#precioV').val() === '' || $('#cantidadV').val() === '') {
+      $('#mensajeError').text('Todos los campos son obligatorios.').show();
+      return;
+    }
+
+    // Obtener los valores ingresados manualmente por el usuario
+    var nombre = $('#productoVenta option:selected').text();
+    var codigo = $('#codigoV').val();
+    var precio = parseFloat($('#precioV').val()); // Convertir el precio a número
+    var cantidad = parseInt($('#cantidadV').val()); // Convertir la cantidad a número
+
+    // Calcular el subtotal del producto
+    var subtotal = precio * cantidad;
+
+    // Actualizar el total acumulado
+    totalAcumulado += subtotal;
+
+    // Obtener la fecha y hora actual
+    var now = new Date();
+    var fechaHora = now.toLocaleString();
+
+    // Mostrar el total acumulado
+    $('#total').text(totalAcumulado.toFixed(2));
+
+    // Construir la fila con los datos ingresados manualmente por el usuario
+    var fila = '<tr>';
+    fila += '<td>' + nombre + '</td>';
+    fila += '<td>' + codigo + '</td>';
+    fila += '<td>' + precio.toFixed(2) + '</td>';
+    fila += '<td>' + cantidad + '</td>';
+    fila += '<td>' + fechaHora + '</td>';
+    fila += '<td><button class="btn btn-danger btn-sm btnEliminarFila">Borrar</button></td>';
+    fila += '</tr>';
+    // Agregar la fila a la tabla
+    $('#tablaMostrar table').append(fila);
+
+    // Limpiar los campos después de la inserción
+    $('#cantidadV').val('');
+
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+  });
+
+  // Envío de tabla y sumatoria al hacer clic en el botón "Enviar Tabla"
+  $('#btnEnviarTabla').click(function () {
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+    // Actualizar el valor del campo oculto con la sumatoria
+    $('#totalAcumuladoInput').val(totalAcumulado.toFixed(2));
+    // Enviar el formulario
+    $('#frmVentasProductos').submit();
+  });
+
+  // Evento de clic para el botón "borrar"
+  $('body').on('click', '.btnEliminarFila', function () {
+    // Obtener la fila a la que pertenece el botón
+    var fila = $(this).closest('tr');
+    // Obtener el precio y la cantidad de la fila que se va a eliminar
+    var precio = parseFloat(fila.find('td:eq(2)').text());
+    var cantidad = parseInt(fila.find('td:eq(3)').text());
+    // Calcular el subtotal de la fila
+    var subtotal = precio * cantidad;
+    // Restar el subtotal de la fila eliminada al total acumulado
+    totalAcumulado -= subtotal;
+    // Actualizar el total acumulado mostrado
+    $('#total').text(totalAcumulado.toFixed(2));
+    // Eliminar la fila
+    fila.remove();
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+  });
+});
+
 </script>
 
 

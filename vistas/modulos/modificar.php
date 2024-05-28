@@ -123,7 +123,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
               </a>
             </li>
             <li class="nav-item">
-              <a href="pages/kanban.html" class="nav-link">
+              <a href="cierre.php" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
                 <p>
                   Cerrar Sesion

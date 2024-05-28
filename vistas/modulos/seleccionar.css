@@ -49,11 +49,10 @@
 
   
    #c-color{
-    background-color: #E48F11;
+    background-color: #c18c5d;
   
    }
 
-   
 
    #d-color{
     background-color: #67067D;
@@ -65,9 +64,12 @@
   }  
    
 
-   div#r-color {
+   #r-color {
     background-color: #216974;
    }
-s
+
+    #v-color {
+    background-color: #ce6a85;
+   }
 
 

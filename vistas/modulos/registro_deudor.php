@@ -163,29 +163,27 @@ include "conexion.php";
                                 <form method="POST">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Categoria</label>
+                                            <label for="exampleInputEmail1">Nombre Completo</label>
                                             <input type="text" class="form-control" id="exampleInputEmail1"
-                                                placeholder="Ingresa categoria" name="categoria">
+                                                placeholder="Ingresa nombre" name="fullnome">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputPassword1">Nombre</label>
+                                            <label for="exampleInputPassword1">Cantidad</label>
                                             <input type="text" class="form-control" id="exampleInputEmail1"
-                                                placeholder="Ingresa nombre de producto" name="nombre">
+                                                placeholder="Ingresa cantidad a deber" name="cantidad">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputPassword1">Precio</label>
+                                            <label for="exampleInputPassword1">Pagado</label>
                                             <input type="text" class="form-control" id="exampleInputEmail1"
-                                                placeholder="Ingresa precio" name="precio">
+                                                placeholder="Ingresa abonos" name="pagado">
                                         </div>
+                                        <?php
+                                        date_default_timezone_set('America/Mexico_City');
+                                        $fecha_actual=date("Y-m-d H:i:s");
+                                        ?>
                                         <div class="form-group">
-                                            <label for="exampleInputPassword1">Stock</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                placeholder="Ingresa cantidad" name="stock">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">Codigo</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                placeholder="Ingresa codigo" name="codigo">
+                                            <label for="exampleInputPassword1">Fecha:<input type="datetime" class="form-control" id="exampleInputEmail1"
+                                             name="fecha" value="<?= $fecha_actual?>"></label>
                                         </div>
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary" name="btnregistrar"
@@ -194,15 +192,15 @@ include "conexion.php";
                                         <?php
                                         if (!empty($_POST["btnregistrar"])) {
 
-                                            if (!empty($_POST["categoria"]) and !empty($_POST["nombre"]) and !empty($_POST["precio"]) and !empty($_POST["stock"]) and !empty($_POST["codigo"])) {
+                                            if (!empty($_POST["fullname"]) and !empty($_POST["cantidad"]) and !empty($_POST["pagado"]) and ($_POST["fecha"])) {
 
-                                                $categoria = $_POST["categoria"];
-                                                $nombre = $_POST["nombre"];
-                                                $precio = $_POST["precio"];
-                                                $stock = $_POST["stock"];
+                                                $fullname = $_POST["fullname"];
+                                                $cantidad = $_POST["cantidad"];
+                                                $pagado = $_POST["pagado"];
+                                                $fecha = $_POST["fecha"];
                                                 $codigo = $_POST["codigo"];
 
-                                                $sql = $conexion->query("insert into altas(categoria,nombre,precio,stock,codigo)values('$categoria','$nombre','$precio','$stock','$codigo' ) ");
+                                                $sql = $conexion->query("insert into deudor(fullname,cantidad,pagado,fecha)values('$fullname','$cantidad','$pagado','$fecha') ");
                                                 if ($sql) {
                                                     echo '<div class="alert alert-success">Producto registrado correctamente</div>';
                                                     # code...

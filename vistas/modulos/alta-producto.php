@@ -213,27 +213,27 @@ $rol_usuario = $datos_usuario["rol"];
                         $sql = $conexion->query(" select * from altas ");
                         while ($datos = $sql->fetch_object()) {
 
-                            ?>
+                          ?>
 
-                            <tr>
-                              <td><?= $datos->id ?></td>
-                              <td><?= $datos->categoria ?></td>
-                              <td><?= $datos->nombre ?></td>
-                              <td><?= $datos->precio ?></td>
-                              <td><?= $datos->stock ?></td>
-                              <td><?= $datos->codigo ?></td>
-                              <td>
-                                <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id ?>"
-                                  class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <?php if ($rol_usuario === 7) { ?>
-                                  <a href="#" onclick="confirmDelete(<?= $datos->id ?>)" class="btn btn-small btn-danger"><i
-                                      class="fa-regular fa-rectangle-xmark"></i></a>
-                                <?php } ?>
+                          <tr>
+                            <td><?= $datos->id ?></td>
+                            <td><?= $datos->categoria ?></td>
+                            <td><?= $datos->nombre ?></td>
+                            <td><?= $datos->precio ?></td>
+                            <td><?= $datos->stock ?></td>
+                            <td><?= $datos->codigo ?></td>
+                            <td>
+                              <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id ?>"
+                                class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                              <?php if ($rol_usuario == 6) { ?>
+                                <a href="#" onclick="confirmDelete(<?= $datos->id ?>)" class="btn btn-small btn-danger"><i
+                                    class="fa-regular fa-rectangle-xmark"></i></a>
+                              <?php } ?>
 
-                              </td>
+                            </td>
 
-                            </tr>
-                          <?php }            
+                          </tr>
+                        <?php }
                         ?>
 
 

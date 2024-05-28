@@ -14,38 +14,45 @@ include "conexion.php";
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | DataTables</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/fontawesome-free/css/all.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet"
+    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet"
+    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet"
+    href="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
   <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="formulario.css">
 
 </head>
+
 <body class="hold-transition sidebar-mini">
-<?php
-if (!empty($_GET["id"])) {
+  <?php
+  if (!empty($_GET["id"])) {
     $id = $_GET["id"];
     $sql = $conexion->query("DELETE FROM altas WHERE id=$id");
     if ($sql) {
-        echo '<div class="alert alert-success">Registro eliminado correctamente</div>';
+      echo '<div class="alert alert-success">Registro eliminado correctamente</div>';
     } else {
-        echo '<div>Error al eliminar</div>';
+      echo '<div>Error al eliminar</div>';
     }
-}
-?>
+  }
+  ?>
 
-<div class="wrapper">
+  <div class="wrapper">
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -161,142 +168,171 @@ if (!empty($_GET["id"])) {
     </aside>
 
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Inventario</h1>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Inventario</h1>
+            </div>
           </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+        </div><!-- /.container-fluid -->
+      </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              
-            <!-- /.card -->
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
 
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Manten el control de tus productos</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr class="bg-black">
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Codigo</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Fecha y Hora</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $sumaTotal = 0; // Inicializamos la variable para almacenar la suma total
-                    $sql = $conexion->query(" select * from ventas ");
-                    while ($datos = $sql->fetch_object()) { 
-                      // Sumamos el precio del producto al total
-                      $sumaTotal += $datos->precio * $datos->cantidad;
-                    ?>
-                   <tr>
-                    <td><?= $datos->id?></td>
-                    <td><?= $datos->nombre?></td>
-                    <td><?= $datos->codigo?></td>
-                    <td><?= $datos->precio?></td>
-                    <td><?= $datos->cantidad?></td>
-                    <td><?= $datos->fecha_hora?></td>
-                     <td>
-                   <button onclick="eliminarProducto(<?= $datos->id ?>)" class="btn btn-small btn-danger"><i class="fas fa-trash"></i></button>
-                     </td>
-                  </tr>
-                  <?php }
+                <!-- /.card -->
 
-                  ?>
-                  
-                  </tbody>
-                </table>
-                <!-- Mostramos el total fuera del bucle -->
-                <div>Total: $<?= $sumaTotal ?></div>
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Manten el control de tus productos</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                        <tr class="bg-black">
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Codigo</th>
+                          <th>Precio</th>
+                          <th>Cantidad</th>
+                          <th>Fecha y Hora</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        $sumaTotal = 0; // Inicializamos la variable para almacenar la suma total
+                        $sql = $conexion->query("SELECT * FROM ventas");
+
+                        if ($sql->num_rows > 0) { // Verificar si hay resultados
+                          $datos = $sql->fetch_object(); // Obtener los datos de la primera fila
+                        
+                          // Colocar el botón solo en la primera fila
+                          echo '<tr>';
+                          echo '<td>' . $datos->id . '</td>';
+                          echo '<td>' . $datos->nombre . '</td>';
+                          echo '<td>' . $datos->codigo . '</td>';
+                          echo '<td>' . $datos->precio . '</td>';
+                          echo '<td>' . $datos->cantidad . '</td>';
+                          echo '<td>' . $datos->fecha_hora . '</td>';
+                          echo '</tr>';
+
+                          // Mostrar el resto de las filas
+                          while ($datos = $sql->fetch_object()) {
+                            // Sumamos el precio del producto al total
+                            $sumaTotal += $datos->precio * $datos->cantidad;
+
+                            // Mostrar los datos sin el botón
+                            echo '<tr>';
+                            echo '<td>' . $datos->id . '</td>';
+                            echo '<td>' . $datos->nombre . '</td>';
+                            echo '<td>' . $datos->codigo . '</td>';
+                            echo '<td>' . $datos->precio . '</td>';
+                            echo '<td>' . $datos->cantidad . '</td>';
+                            echo '<td>' . $datos->fecha_hora . '</td>';
+                            echo '<td></td>'; // Espacio para el botón en las filas restantes
+                            echo '</tr>';
+                          }
+                        } else {
+                          // Si no hay resultados, mostrar un mensaje de que no hay datos
+                          echo '<tr><td colspan="7">No hay datos disponibles</td></tr>';
+                        }
+                        ?>
+                      </tbody>
+                    </table>
+                    <!-- Mostramos el total fuera del bucle -->
+                    <div>Total: $<?= $sumaTotal ?></div>
+                  </div>
+
+                  <div class="msg-error">
+                    <button onclick="eliminarTodosLosProductos()" class="btn btn-danger mb-3"><i
+                          class="fas fa-trash"></i> Eliminar Todos los Productos</button>
+                  </div>
+
+
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  </div>
-  
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
+      </section>
     </div>
-    <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los derechos reservados.
-  </footer>
 
-</div>
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 3.2.0
+      </div>
+      <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los
+      derechos reservados.
+    </footer>
 
-<script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/jszip/jszip.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
+  </div>
 
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script
+    src="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script
+    src="http://127.0.0.1/proyectov/vistas/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/jszip/jszip.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
+
+  <script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
     });
-  });
 
-  function eliminarProducto(id) {
-    if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-        // Realiza una petición AJAX para eliminar el producto
+
+    function eliminarTodosLosProductos() {
+      if (confirm("¿Estás seguro de que quieres eliminar todos los productos?")) {
+        // Realiza una petición AJAX para eliminar todos los productos
         $.ajax({
-            url: 'eliminar_producto.php', // Ruta al archivo PHP para eliminar el producto
-            method: 'GET',
-            data: { id: id }, // ID del producto a eliminar
-            success: function(response) {
-                // Si se elimina correctamente, recarga la página actual
-                location.reload();
-            },
-            error: function(xhr, status, error) {
-                // Si hay un error, muestra un mensaje de error
-                console.error(error);
-                alert("Error al eliminar el producto.");
-            }
+          url: 'eliminar_todos_los_productos.php', // Ruta al archivo PHP para eliminar todos los productos
+          method: 'GET',
+          success: function (response) {
+            // Si se eliminan correctamente, recarga la página actual
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            // Si hay un error, muestra un mensaje de error
+            console.error(error);
+            alert("Error al eliminar los productos.");
+          }
         });
+      }
     }
-}
-</script>
+
+
+
+  </script>
 </body>
+
 </html>

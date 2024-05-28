@@ -214,17 +214,12 @@ $rol_usuario = $datos_usuario["rol"];
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="http://127.0.0.1/proyectov/vistas/modulos/registro_deudor.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
 
             <?php } ?>
 
-            <style>
-              div#r-color {
-                background-color: #216974;
-              }
-            </style>
 
               <?php if ($rol_usuario === '6') { ?>
             <div class="col-lg-3 col-6">
@@ -239,6 +234,28 @@ $rol_usuario = $datos_usuario["rol"];
                   <i class="ion ion-person-add"></i>
                 </div>
                 <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+               <?php } ?>
+
+               <style>
+                 #v-color {
+                 background-color: #ce6a85;
+                  }
+               </style>
+               <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box" id="v-color">
+                <div class="inner">
+                  <h3>Historial</h3>
+
+                  <p>Consulta tus ventas</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="http://127.0.0.1/proyectov/vistas/modulos/formulario.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
                <?php } ?>

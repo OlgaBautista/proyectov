@@ -48,15 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tablaHTML"]) && isset(
     }
     // Cerrar la declaración
     $stmt->close();
+    
   } else {
     // Si ocurre un error al preparar la consulta, imprimir el mensaje de error
     echo "Error al preparar la consulta: " . $conexion->error;
   }
 
   // Redireccionar al formulario con un mensaje de éxito
-  header("location: formulario.php?success=true");
-} else {
-  // Si no se recibieron los datos del formulario, redireccionar al formulario
-  header("location: formulario.php");
-}
+  header("location: reporteventa.php");
+} 
 ?>

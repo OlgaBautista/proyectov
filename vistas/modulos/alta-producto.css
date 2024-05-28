@@ -1,0 +1,4 @@
+div#example1_filter {
+    display: flex;
+    justify-content: end;
+}
