@@ -2,17 +2,27 @@
 session_start();
 
 if (empty($_SESSION["id"])) {
-  header("location: http://127.0.0.1/proyectov/");
+    header("location: http://127.0.0.1/proyectov/");
+    exit(); // Agregamos exit para detener la ejecución del script
 }
 
+include "conexion.php";
+
+// Obtener el rol del usuario
+$usuario_id = $_SESSION["id"];
+$sql = "SELECT rol FROM productos WHERE id = $usuario_id";
+$resultado = $conexion->query($sql);
+$datos_usuario = $resultado->fetch_assoc();
+$rol_usuario = $datos_usuario["rol"];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio</title>
+  <title>Pagina de Inicio</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -24,7 +34,6 @@ if (empty($_SESSION["id"])) {
   <link rel="stylesheet"
     href="http://127.0.0.1/proyectov/vistas/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
@@ -34,62 +43,8 @@ if (empty($_SESSION["id"])) {
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
-
-<style>
-  @media (max-width: 767px) {
-
-    .row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .col-6 {
-      -ms-flex: 0 0 50%;
-      flex: 0 0 50%;
-      max-width: 80%;
-    }
-
-
-  }
-
-  @media (max-width: 1330px) {
-
-    .small-box>.inner {
-    padding: 1rem;
-    max-height: 114px;
-}
-
-}
-  #inv-color {
-
-    background-color: #F09950;
-
-  }
-
-  .icon {
-    padding: 7px;
-  }
-
-  a.small-box-footer {
-    height: 6rem;
-    display: flex;
-    align-content: center;
-  }
-
-   #p-color{
-    background-color: #059A96;
-   }
-
-   #c-color{
-    background-color: #E48F11;
-   }
-   #d-color{
-    background-color: #67067D;
-   }
-
-</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -114,33 +69,8 @@ if (empty($_SESSION["id"])) {
       <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-          </a>
-          <div class="navbar-search-block">
-            <form class="form-inline">
-              <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                  <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                  </button>
-                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-            <i class="fas fa-th-large"></i>
           </a>
         </li>
       </ul>
@@ -151,7 +81,7 @@ if (empty($_SESSION["id"])) {
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-        <img src="http://127.0.0.1/proyectov/vistas/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+        <img src="http://127.0.0.1/proyectov/vistas/imagen/tienda.png" alt="AdminLTE Logo"
           class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">¡Bienvenido!</span>
       </a>
@@ -161,7 +91,7 @@ if (empty($_SESSION["id"])) {
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="http://127.0.0.1/proyectov/vistas/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
+            <img src="http://127.0.0.1/proyectov/vistas/imagen/icon1.png" class="img-circle elevation-2"
               alt="User Image">
           </div>
           <div class="info">
@@ -173,7 +103,7 @@ if (empty($_SESSION["id"])) {
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item menu-open">
-            <li class="nav-header">EXAMPLES</li>
+            <li class="nav-header">Menú</li>
             <li class="nav-item">
               <a href="pages/calendar.html" class="nav-link">
                 <i class="nav-icon far fa-calendar-alt"></i>
@@ -213,13 +143,11 @@ if (empty($_SESSION["id"])) {
           <div class="row mb-2">
             <div class="col-sm-6">
               <h1 class="m-0">Menú</h1>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- /.content-header -->
 
-      <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
@@ -239,6 +167,7 @@ if (empty($_SESSION["id"])) {
               </div>
             </div>
             <!-- ./col -->
+            <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="p-color">
@@ -254,12 +183,14 @@ if (empty($_SESSION["id"])) {
                   aqui <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            <?php } ?>
+            
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="c-color">
                 <div class="inner">
-                  <h3>Calculadora</h3>
+                  <h3>Ventas</h3>
 
                   <p>Reporte Venta</p>
                 </div>
@@ -271,27 +202,67 @@ if (empty($_SESSION["id"])) {
               </div>
             </div>
             <!-- ./col -->
+            <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
+
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box" id="d-color">
                 <div class="inner">
-                  <h3>65</h3>
-
-                  <p>Unique Visitors</p>
+                  <h3>Prestamo</h3>
+                  <p>Administre sus prestamos</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="http://127.0.0.1/proyectov/vistas/modulos/registro_deudor.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
 
+            <?php } ?>
+
+
+              <?php if ($rol_usuario === '6') { ?>
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box" id="r-color">
+                <div class="inner">
+                  <h3>Registro</h3>
+
+                  <p>Dar de alta usuarios </p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+               <?php } ?>
+
+               <style>
+                 #v-color {
+                 background-color: #ce6a85;
+                  }
+               </style>
+               <?php if ($rol_usuario === '6' || $rol_usuario === '7') { ?>
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box" id="v-color">
+                <div class="inner">
+                  <h3>Historial</h3>
+
+                  <p>Consulta tus ventas</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+                <a href="http://127.0.0.1/proyectov/vistas/modulos/formulario.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+               <?php } ?>
+
           </div>
-        </div><!-- /.container-fluid -->
       </section>
-      <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
     <footer class="main-footer">
       <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los
       derechos reservados.
@@ -300,13 +271,8 @@ if (empty($_SESSION["id"])) {
       </div>
     </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+    <aside class="control-sidebar control-sidebar-dark"></aside>
   </div>
-  <!-- ./wrapper -->
 
   <!-- jQuery -->
   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>

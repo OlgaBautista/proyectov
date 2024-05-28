@@ -3,18 +3,12 @@ session_start();
 
 if (empty($_SESSION["id"])) {
   header("location: http://127.0.0.1/proyectov/");
-  exit(); // Agregamos exit para detener la ejecución del script
 }
 
-// Incluir archivo de conexión
-include "conexion.php";
+?>
+<?php
 
-// Obtener el rol del usuario
-$usuario_id = $_SESSION["id"];
-$sql = "SELECT rol FROM productos WHERE id = $usuario_id";
-$resultado = $conexion->query($sql);
-$datos_usuario = $resultado->fetch_assoc();
-$rol_usuario = $datos_usuario["rol"];
+include "conexion.php";
 
 ?>
 
@@ -41,10 +35,23 @@ $rol_usuario = $datos_usuario["rol"];
   <!-- Theme style -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/dist/css/adminlte.min.css">
   <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="seleccionar.css">
+  <link rel="stylesheet" type="text/css" href="formulario.css">
+
 </head>
 
 <body class="hold-transition sidebar-mini">
+  <?php
+  if (!empty($_GET["id"])) {
+    $id = $_GET["id"];
+    $sql = $conexion->query("DELETE FROM altas WHERE id=$id");
+    if ($sql) {
+      echo '<div class="alert alert-success">Registro eliminado correctamente</div>';
+    } else {
+      echo '<div>Error al eliminar</div>';
+    }
+  }
+  ?>
+
   <div class="wrapper">
 
     <!-- Preloader -->
@@ -55,7 +62,11 @@ $rol_usuario = $datos_usuario["rol"];
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
       <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="http://127.0.0.1/proyectov/vistas/modulos/seleccionar.php" class="nav-link">Home</a>
         </li>
@@ -63,6 +74,7 @@ $rol_usuario = $datos_usuario["rol"];
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
         <li class="nav-item">
           <a class="nav-link" data-widget="navbar-search" href="#" role="button">
             <i class="fas fa-search"></i>
@@ -155,19 +167,9 @@ $rol_usuario = $datos_usuario["rol"];
       <!-- /.sidebar -->
     </aside>
 
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <?php
-      if (!empty($_GET["id"])) {
-        $id = $_GET["id"];
-        $sql = $conexion->query("DELETE FROM altas WHERE id=$id");
-        if ($sql) {
-          echo '<div class="alert alert-success">Registro eliminado correctamente</div>';
-        } else {
-          echo '<div>Error al eliminar</div>';
-        }
-      }
-      ?>
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <div class="container-fluid">
@@ -186,61 +188,76 @@ $rol_usuario = $datos_usuario["rol"];
             <div class="col-12">
               <div class="card">
 
+                <!-- /.card -->
 
                 <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">Manten el control de tus productos</h3>
                   </div>
-
+                  <!-- /.card-header -->
                   <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
-
                       <thead>
                         <tr class="bg-black">
                           <th>Id</th>
-                          <th>Categoria</th>
                           <th>Nombre</th>
-                          <th>Precio</th>
-                          <th>Stock</th>
                           <th>Codigo</th>
-                          <th></th>
+                          <th>Precio</th>
+                          <th>Cantidad</th>
+                          <th>Fecha y Hora</th>
                         </tr>
-
                       </thead>
-
                       <tbody>
                         <?php
-                        $sql = $conexion->query(" select * from altas ");
-                        while ($datos = $sql->fetch_object()) {
+                        $sumaTotal = 0; // Inicializamos la variable para almacenar la suma total
+                        $sql = $conexion->query("SELECT * FROM ventas");
 
-                          ?>
+                        if ($sql->num_rows > 0) { // Verificar si hay resultados
+                          $datos = $sql->fetch_object(); // Obtener los datos de la primera fila
+                        
+                          // Colocar el botón solo en la primera fila
+                          echo '<tr>';
+                          echo '<td>' . $datos->id . '</td>';
+                          echo '<td>' . $datos->nombre . '</td>';
+                          echo '<td>' . $datos->codigo . '</td>';
+                          echo '<td>' . $datos->precio . '</td>';
+                          echo '<td>' . $datos->cantidad . '</td>';
+                          echo '<td>' . $datos->fecha_hora . '</td>';
+                          echo '</tr>';
 
-                          <tr>
-                            <td><?= $datos->id ?></td>
-                            <td><?= $datos->categoria ?></td>
-                            <td><?= $datos->nombre ?></td>
-                            <td><?= $datos->precio ?></td>
-                            <td><?= $datos->stock ?></td>
-                            <td><?= $datos->codigo ?></td>
-                            <td>
-                              <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id ?>"
-                                class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                              <?php if ($rol_usuario == 6) { ?>
-                                <a href="#" onclick="confirmDelete(<?= $datos->id ?>)" class="btn btn-small btn-danger"><i
-                                    class="fa-regular fa-rectangle-xmark"></i></a>
-                              <?php } ?>
+                          // Mostrar el resto de las filas
+                          while ($datos = $sql->fetch_object()) {
+                            // Sumamos el precio del producto al total
+                            $sumaTotal += $datos->precio * $datos->cantidad;
 
-                            </td>
-
-                          </tr>
-                        <?php }
+                            // Mostrar los datos sin el botón
+                            echo '<tr>';
+                            echo '<td>' . $datos->id . '</td>';
+                            echo '<td>' . $datos->nombre . '</td>';
+                            echo '<td>' . $datos->codigo . '</td>';
+                            echo '<td>' . $datos->precio . '</td>';
+                            echo '<td>' . $datos->cantidad . '</td>';
+                            echo '<td>' . $datos->fecha_hora . '</td>';
+                            echo '<td></td>'; // Espacio para el botón en las filas restantes
+                            echo '</tr>';
+                          }
+                        } else {
+                          // Si no hay resultados, mostrar un mensaje de que no hay datos
+                          echo '<tr><td colspan="7">No hay datos disponibles</td></tr>';
+                        }
                         ?>
-
-
                       </tbody>
-
                     </table>
+                    <!-- Mostramos el total fuera del bucle -->
+                    <div>Total: $<?= $sumaTotal ?></div>
                   </div>
+
+                  <div class="msg-error">
+                    <button onclick="eliminarTodosLosProductos()" class="btn btn-danger mb-3"><i
+                          class="fas fa-trash"></i> Eliminar Todos los Productos</button>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -293,11 +310,28 @@ $rol_usuario = $datos_usuario["rol"];
       });
     });
 
-    function confirmDelete(id) {
-      if (confirm("¿Estás seguro de que quieres eliminar este registro?")) {
-        window.location.href = "http://127.0.0.1/proyectov/vistas/modulos/alta-producto.php?id=" + id;
+
+    function eliminarTodosLosProductos() {
+      if (confirm("¿Estás seguro de que quieres eliminar todos los productos?")) {
+        // Realiza una petición AJAX para eliminar todos los productos
+        $.ajax({
+          url: 'eliminar_todos_los_productos.php', // Ruta al archivo PHP para eliminar todos los productos
+          method: 'GET',
+          success: function (response) {
+            // Si se eliminan correctamente, recarga la página actual
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            // Si hay un error, muestra un mensaje de error
+            console.error(error);
+            alert("Error al eliminar los productos.");
+          }
+        });
       }
     }
+
+
+
   </script>
 </body>
 

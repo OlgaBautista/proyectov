@@ -1,18 +1,6 @@
 <?php
 
-$usuario = "root";
-$password = "";
-$servidor = "localhost";
-$basededatos = "inventariov";
-
-
-$conexion = mysqli_connect($servidor, $usuario, "") or die("Error con el servidor de la Base de datos");
-
-
-$db = mysqli_select_db($conexion, $basededatos) or die("Error conexion al conectarse a la Base de datos");
-
-
-$conexion->set_charset("utf8");
+include "conexion.php";
 
 $id = $_GET["id"];
 
@@ -29,8 +17,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
   <title>AdminLTE 3 | General Form Elements</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
@@ -94,20 +81,18 @@ $sql = $conexion->query("select * from altas where id=$id ");
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
-      <a href="../../index3.html" class="brand-link">
-        <img src="http://127.0.0.1/proyectov/vistas/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-          class="brand-image img-circle elevation-3" style="opacity: .8">
+     <!-- Brand Logo -->
+     <a href="index3.html" class="brand-link">
+        <img src="http://127.0.0.1/proyectov/vistas/imagen/tienda.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">¡Bienvenido!</span>
       </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
-        <!-- Sidebar user (optional) -->
+        <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="http://127.0.0.1/proyectov/vistas/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
-              alt="User Image">
+            <img src="http://127.0.0.1/proyectov/vistas/imagen/icon1.png" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
             <a href="#" class="d-block">Tienda "La Curvita"</a>
@@ -117,8 +102,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
+            <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
 
             <li class="nav-header">EXAMPLES</li>
             <li class="nav-item">
@@ -126,7 +110,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
                 <i class="nav-icon far fa-calendar-alt"></i>
                 <p>
                   Sobre Nosotros
-                  <span class="badge badge-info right">2</span>
+                  <span class="badge badge-info right"></span>
                 </p>
               </a>
             </li>
@@ -139,7 +123,7 @@ $sql = $conexion->query("select * from altas where id=$id ");
               </a>
             </li>
             <li class="nav-item">
-              <a href="pages/kanban.html" class="nav-link">
+              <a href="cierre.php" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
                 <p>
                   Cerrar Sesion
@@ -155,18 +139,12 @@ $sql = $conexion->query("select * from altas where id=$id ");
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
+      <!-- Main content -->
       <section class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>General Form</h1>
-            </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">General Form</li>
-              </ol>
+              <h1>Modificar producto</h1>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -181,129 +159,86 @@ $sql = $conexion->query("select * from altas where id=$id ");
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Quick Example</h3>
+                  <h3 class="card-title">Formulario</h3>
                 </div>
                 <input type="hidden" name="id" value="<?= $_GET["id"] ?>">
-                <?php
-
-
-                while ($datos = $sql->fetch_object()) {
-
-                  ?>
-
-
-
+                <?php while ($datos = $sql->fetch_object()) { ?>
                   <form method="POST">
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Categoria</label>
-                        <input type="text" class="form-control" placeholder="Ingresa categoria" name="categoria"
-                          value="<?= $datos->categoria ?>">
+                        <label for="categoria">Categoria</label>
+                        <input type="text" class="form-control" placeholder="Ingresa categoria" name="categoria" value="<?= $datos->categoria ?>">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Nombre</label>
-                        <input type="text" class="form-control" placeholder="Ingresa nombre de producto" name="nombre"
-                          value="<?= $datos->nombre ?>">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Ingresa nombre de producto" name="nombre" value="<?= $datos->nombre ?>">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Precio</label>
-                        <input type="text" class="form-control" placeholder="Ingresa precio" name="precio"
-                          value="<?= $datos->precio ?>">
+                        <label for="precio">Precio</label>
+                        <input type="text" class="form-control" placeholder="Ingresa precio" name="precio" value="<?= $datos->precio ?>">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Stock</label>
-                        <input type="text" class="form-control" placeholder="Ingresa cantidad" name="stock"
-                          value="<?= $datos->stock ?>">
+                        <label for="stock">Stock</label>
+                        <input type="text" class="form-control" placeholder="Ingresa cantidad" name="stock" value="<?= $datos->stock ?>">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Codigo</label>
-                        <input type="text" class="form-control" placeholder="Ingresa codigo" name="codigo"
-                          value="<?= $datos->codigo ?>">
+                        <label for="codigo">Codigo</label>
+                        <input type="text" class="form-control" placeholder="Ingresa codigo" name="codigo" value="<?= $datos->codigo ?>">
                       </div>
-                    <?php }
-
-                ?>
+                    <?php } ?>
                     <div class="card-footer">
                       <button type="submit" class="btn btn-primary" name="btnmodificar" value="ok">Modificar</button>
                     </div>
+                  </form>
 
-
-                  </div>
+                  <?php
+                  if (!empty($_POST["btnmodificar"])) {
+                    if (!empty($_POST["categoria"]) && !empty($_POST["nombre"]) && !empty($_POST["precio"]) && !empty($_POST["stock"]) && !empty($_POST["codigo"])) {
+                      $id = isset($_GET["id"]) ? $_GET["id"] : null;
+                      $categoria = $_POST["categoria"];
+                      $nombre = $_POST["nombre"];
+                      $precio = $_POST["precio"];
+                      $stock = $_POST["stock"];
+                      $codigo = $_POST["codigo"];
+                      $sql = $conexion->query("update altas set categoria='$categoria', nombre='$nombre', precio='$precio', stock='$stock', codigo='$codigo' where id='$id'");
+                      if ($sql) {
+                        echo "<div class='alert alert-success'>Actualizado con éxito</div>";
+                      } else {
+                        echo "<div class='alert alert-danger'>Error al actualizar el producto</div>";
+                      }
+                    } else {
+                      echo "<div class='alert alert-warning'>No puede haber campos vacíos</div>";
+                    }
+                  }
+                  ?>
               </div>
             </div>
-            <!-- /.card-body -->
-
-
           </div>
-          </form>
-
-          <?php
-          if (!empty($_POST["btnmodificar"])) {
-
-            if (!empty($_POST["categoria"]) and !empty($_POST["nombre"]) and !empty($_POST["precio"]) and !empty($_POST["stock"]) and !empty($_POST["codigo"])) {
-              $id = isset($_GET["id"]) ? $_GET["id"] : null;
-              $categoria = $_POST["categoria"];
-              $nombre = $_POST["nombre"];
-              $precio = $_POST["precio"];
-              $stock = $_POST["stock"];
-              $codigo = $_POST["codigo"];
-              $sql = $conexion->query("update altas set categoria='$categoria', nombre='$nombre', precio='$precio', stock='$stock', codigo='$codigo' where id='$id'");
-              if ($sql) {
-                echo "<div class='alert alert-success'>Actualizado con exito</div>";
-              } else {
-                // Mostrar mensaje de error si la modificación falló
-                echo "<div class='alert alert-danger'>Error al actualizar el producto</div>";
-              }
-  
-            }
-
-          }
-
-          ?>  
-
         </div>
-        <!-- /.card -->
-
+      </section>
     </div>
 
-    <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
-  </div>
-  <!--/.col (right) -->
-  </div>
-  <!-- /.row -->
-  </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los
-    derechos reservados.
-  </footer>
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 3.2.0
+      </div>
+      <strong>Copyright &copy; 2024 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> Lupita & Laura Todos los derechos reservados.
+    </footer>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
   </div>
-  <!-- ./wrapper -->
 
   <!-- jQuery -->
   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
-  <script
-    src="http://127.http://127.0.0.1/proyectov/vistas/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- bs-custom-file-input -->
-  <script
-    src="http://127.0.0.1/proyhttp://127.0.0.1/proyectov/vistas/vistas/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
   <!-- AdminLTE App -->
-  <script src="http://127.0.0.1/proyectov/vistas/dist/js/admhttp://127.0.0.1/proyectov/vistas/min.js"></script>
+  <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
   <!-- Page specific script -->
   <script>
     $(function () {

@@ -8,19 +8,7 @@ if (empty($_SESSION["id"])) {
 ?>
 <?php
 
-$usuario = "root";
-$password = "";
-$servidor = "localhost";
-$basededatos = "inventariov";
-
-
-$conexion = mysqli_connect($servidor, $usuario, "") or die("Error con el servidor de la Base de datos");
-
-
-$db = mysqli_select_db($conexion, $basededatos) or die("Error conexion al conectarse a la Base de datos");
-
-
-$conexion->set_charset("utf8");
+include "conexion.php";
 
 ?>
 
@@ -173,7 +161,7 @@ $conexion->set_charset("utf8");
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Alta de Producto</h1>
+              <h1>Reporte de Venta</h1>
             </div>
           </div>
         </div><!-- /.container-fluid -->
@@ -193,12 +181,12 @@ $conexion->set_charset("utf8");
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form id="frmVentasProductos" method="POST">
+                <form id="frmVentasProductos" action="registros_ventas.php" method="POST">
                   <div class="card-body">
                     <!-- Tu formulario aquí -->
                     <div class="form-group">
                       <label>Selecciona Producto</label>
-                      <select class="form-control input-group-sm" id="productoVenta" name="productoVenta">
+                      <select class="form-control input-group-sm" id="productoVenta" name="productoVenta" required>
                         <option value="">Selecciona</option>
                         <?php
                         // Consulta para obtener la lista de productos
@@ -211,21 +199,32 @@ $conexion->set_charset("utf8");
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Codigo</label>
-                      <input type="text" class="form-control" id="codigoV" placeholder="Ingresa precio" name="codigoV">
+                      <input type="text" class="form-control" id="codigoV" placeholder="Ingresa precio" name="codigoV" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Precio</label>
                       <input type="text" class="form-control" id="precioV" placeholder="Ingresa cantidad"
-                        name="precioV">
+                        name="precioV" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Cantidad</label>
                       <input type="text" class="form-control" id="cantidadV" placeholder="Ingresa codigo"
-                        name="cantidadV">
+                        name="cantidadV" required>
                     </div>
                     <div class="card-footer">
-                      <button id="btnEnviar" type="button" class="btn btn-primary">Enviar</button>
+                      <!--BOTON DE ENVIAR-->
+                      <button id="btnEnviar" class="btn btn-primary" type="button">Enviar</button>
+                      <!-- BOTÓN PARA ENVIAR LA TABLA -->
+                      <button id="btnEnviarTabla" class="btn btn-secondary" type="button">Enviar Datos</button>
+
+                      <!-- Agrega un campo oculto para enviar la tabla y la sumatoria -->
+                      <input type="hidden" id="tablaHTML" name="tablaHTML">
+                      <input type="hidden" id="totalAcumuladoInput" name="totalAcumulado">
+                      
                     </div>
+
+                    <div id="mensajeError" class="alert alert-danger" style="display: none;"></div>
+
 
                   </div>
                 </form>
@@ -235,79 +234,143 @@ $conexion->set_charset("utf8");
 
             <!-- Columna para la tabla -->
             <div class="col-md-6">
-              <div id="tablaDatos" class="card">
+              <div id="tablaMostrar" class="card">
                 <div class="card-header">
                   <h3 class="card-title">Tabla de Productos</h3>
                 </div>
                 <div class="card-body">
                   <!-- Tu tabla aquí -->
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="tablaProductos" class="table table-bordered table-striped">
+
                     <thead>
                       <tr class="bg-black">
                         <th>Nombre</th>
                         <th>Código</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
+                        <th>Fecha y Hora</th>
+                        <th></th>
                       </tr>
                     </thead>
+                  </table>
+
+                  <div id="totalAcumuladoDiv">
+                    <label>Total acumulado: </label>
+                    <span id="total">0.00</span>
+                  </div>
+
                 </div>
 
                 <div>
-                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                  <script>
+                
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+  // Variable para almacenar el total acumulado
+  var totalAcumulado = 0;
 
-                    $(document).ready(function () {
-                      // Autollenado de campos al cargar la página
-                      $('#productoVenta').change(function () {
-                        // Obtener el ID del producto seleccionado
-                        var idProducto = $(this).val();
-                        // Realizar una solicitud AJAX para obtener los detalles del producto
-                        $.ajax({
-                          url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
-                          method: 'POST',
-                          data: { idProducto: idProducto },
-                          dataType: 'json',
-                          success: function (data) {
-                            // Actualizar los campos con los datos obtenidos
-                            $('#codigoV').val(data.codigo);
-                            $('#precioV').val(data.precio);
-                            $('#cantidadV').val(data.cantidad);
-                          },
-                          error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
-                          }
-                        });
-                      });
+  // Autollenado de campos al cargar la página
+  $('#productoVenta').change(function () {
+    // Obtener el ID del producto seleccionado
+    var idProducto = $(this).val();
+    // Realizar una solicitud AJAX para obtener los detalles del producto
+    $.ajax({
+      url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
+      method: 'POST',
+      data: { idProducto: idProducto },
+      dataType: 'json',
+      success: function (data) {
+        // Actualizar los campos con los datos obtenidos
+        $('#codigoV').val(data.codigo);
+        $('#precioV').val(data.precio);
+        $('#cantidadV').val(''); // Limpiar el campo de cantidad al autollenar otros campos
+      },
+      error: function (xhr, status, error) {
+        console.error(xhr.responseText);
+      }
+    });
+  });
 
-                      // Envío de datos al hacer clic en el botón "Enviar"
-                      $('#btnEnviar').click(function () {
-                        // Obtener el ID del producto seleccionado
-                        var idProducto = $('#productoVenta').val();
-                        // Realizar una solicitud AJAX para obtener los datos del producto
-                        $.ajax({
-                          url: 'obtener_producto.php', // Ruta de tu archivo PHP que obtiene los datos del producto
-                          type: 'POST',
-                          data: { idProducto: idProducto },
-                          dataType: 'json',
-                          success: function (data) {
-                            // Construir la fila con los datos recibidos
-                            var fila = '<tr>';
-                            fila += '<td>' + data.nombre + '</td>';
-                            fila += '<td>' + data.codigo + '</td>';
-                            fila += '<td>' + data.precio + '</td>';
-                            fila += '<td>' + data.cantidad + '</td>';
-                            fila += '</tr>';
-                            // Agregar la fila a la tabla
-                            $('#tablaDatos table').append(fila);
-                          },
-                          error: function () {
-                            alert('Error al obtener los datos del producto.');
-                          }
-                        });
-                      });
-                    });
+  // Envío de datos al hacer clic en el botón "Enviar"
+  $('#btnEnviar').click(function () {
+    // Validar que todos los campos estén llenos
+    if ($('#productoVenta').val() === '' || $('#codigoV').val() === '' || $('#precioV').val() === '' || $('#cantidadV').val() === '') {
+      $('#mensajeError').text('Todos los campos son obligatorios.').show();
+      return;
+    }
 
-                  </script>
+    // Obtener los valores ingresados manualmente por el usuario
+    var nombre = $('#productoVenta option:selected').text();
+    var codigo = $('#codigoV').val();
+    var precio = parseFloat($('#precioV').val()); // Convertir el precio a número
+    var cantidad = parseInt($('#cantidadV').val()); // Convertir la cantidad a número
+
+    // Calcular el subtotal del producto
+    var subtotal = precio * cantidad;
+
+    // Actualizar el total acumulado
+    totalAcumulado += subtotal;
+
+    // Obtener la fecha y hora actual
+    var now = new Date();
+    var fechaHora = now.toLocaleString();
+
+    // Mostrar el total acumulado
+    $('#total').text(totalAcumulado.toFixed(2));
+
+    // Construir la fila con los datos ingresados manualmente por el usuario
+    var fila = '<tr>';
+    fila += '<td>' + nombre + '</td>';
+    fila += '<td>' + codigo + '</td>';
+    fila += '<td>' + precio.toFixed(2) + '</td>';
+    fila += '<td>' + cantidad + '</td>';
+    fila += '<td>' + fechaHora + '</td>';
+    fila += '<td><button class="btn btn-danger btn-sm btnEliminarFila">Borrar</button></td>';
+    fila += '</tr>';
+    // Agregar la fila a la tabla
+    $('#tablaMostrar table').append(fila);
+
+    // Limpiar los campos después de la inserción
+    $('#cantidadV').val('');
+
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+  });
+
+  // Envío de tabla y sumatoria al hacer clic en el botón "Enviar Tabla"
+  $('#btnEnviarTabla').click(function () {
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+    // Actualizar el valor del campo oculto con la sumatoria
+    $('#totalAcumuladoInput').val(totalAcumulado.toFixed(2));
+    // Enviar el formulario
+    $('#frmVentasProductos').submit();
+  });
+
+  // Evento de clic para el botón "borrar"
+  $('body').on('click', '.btnEliminarFila', function () {
+    // Obtener la fila a la que pertenece el botón
+    var fila = $(this).closest('tr');
+    // Obtener el precio y la cantidad de la fila que se va a eliminar
+    var precio = parseFloat(fila.find('td:eq(2)').text());
+    var cantidad = parseInt(fila.find('td:eq(3)').text());
+    // Calcular el subtotal de la fila
+    var subtotal = precio * cantidad;
+    // Restar el subtotal de la fila eliminada al total acumulado
+    totalAcumulado -= subtotal;
+    // Actualizar el total acumulado mostrado
+    $('#total').text(totalAcumulado.toFixed(2));
+    // Eliminar la fila
+    fila.remove();
+    // Actualizar el valor del campo oculto con el HTML de la tabla
+    $('#tablaHTML').val($('#tablaMostrar').html());
+  });
+});
+
+</script>
+
+
+
 
                   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
                   <script src="http://127.0.0.1/proyectov/vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -333,9 +396,6 @@ $conexion->set_charset("utf8");
                     src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
                   <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
 
-                  <script>
-
-                  </script>
                 </div>
               </div>
             </div>
@@ -346,16 +406,16 @@ $conexion->set_charset("utf8");
         <!-- /.card -->
 
     </div>
-
   </div>
   </div>
   </div>
   </div><!-- /.container-fluid -->
+
   </section>
+
+  </div>
   </div>
 
-  <aside class="control-sidebar control-sidebar-dark"></aside>
-  </div>
 </body>
 
 </html>

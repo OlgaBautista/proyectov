@@ -40,6 +40,7 @@ include "conexion.php";
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="http://127.0.0.1/proyectov/vistas/plugins/summernote/summernote-bs4.min.css">
+  <script src="https://kit.fontawesome.com/4a8faa5bb3.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="seleccionar.css">
 </head>
 
@@ -68,6 +69,7 @@ include "conexion.php";
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
@@ -75,6 +77,7 @@ include "conexion.php";
         </li>
       </ul>
     </nav>
+    <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -129,7 +132,9 @@ include "conexion.php";
             </li>
           </ul>
         </nav>
+        <!-- /.sidebar-menu -->
       </div>
+      <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
@@ -142,7 +147,7 @@ include "conexion.php";
               <h1>Alta de Producto</h1>
             </div>
           </div>
-        </div>
+        </div><!-- /.container-fluid -->
       </section>
 
       <!-- Main content -->
@@ -151,38 +156,43 @@ include "conexion.php";
           <div class="row">
             <!-- left column -->
             <div class="col-md-6">
+              <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
                   <h3 class="card-title">Formulario</h3>
 
                 </div>
+                <!-- /.card-header -->
                 <!-- form start -->
                 <form method="POST">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Categoria</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa categoria"
-                        name="categoria">
+                      <label for="exampleInputEmail1">Usuario</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa usuario"
+                        name="usuario">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Clave</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1"
+                        placeholder="Ingresa clave" name="clave">
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Nombre</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1"
-                        placeholder="Ingresa nombre de producto" name="nombre">
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa nombre"
+                        name="nombre">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Precio</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa precio"
-                        name="precio">
+                      <label for="exampleInputPassword1">Apellido</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa apellido"
+                        name="apellido">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword1">Stock</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa cantidad"
-                        name="stock">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Codigo</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa codigo"
-                        name="codigo">
+                      <label>Selecciona Rol</label>
+                      <select class="form-control input-group-sm" id="rol" name="rol">
+                        <option value="6">Administrador</option>
+                        <option value="7">Usuario</option>
+                        <option value="8">Consultor</option>
+                      </select>
                     </div>
                     <div class="card-footer">
                       <button type="submit" class="btn btn-primary" name="btnregistrar" value="ok">Registrar</button>
@@ -190,15 +200,15 @@ include "conexion.php";
                     <?php
                     if (!empty($_POST["btnregistrar"])) {
 
-                      if (!empty($_POST["categoria"]) and !empty($_POST["nombre"]) and !empty($_POST["precio"]) and !empty($_POST["stock"]) and !empty($_POST["codigo"])) {
+                      if (!empty($_POST["usuario"]) and !empty($_POST["clave"]) and !empty($_POST["nombre"]) and !empty($_POST["apellido"]) and !empty($_POST["rol"])) {
 
-                        $categoria = $_POST["categoria"];
+                        $usuario = $_POST["usuario"];
+                        $clave = $_POST["clave"];
                         $nombre = $_POST["nombre"];
-                        $precio = $_POST["precio"];
-                        $stock = $_POST["stock"];
-                        $codigo = $_POST["codigo"];
+                        $apellido = $_POST["apellido"];
+                        $rol = $_POST["rol"];
 
-                        $sql = $conexion->query("insert into altas(categoria,nombre,precio,stock,codigo)values('$categoria','$nombre','$precio','$stock','$codigo' ) ");
+                        $sql = $conexion->query("insert into productos(usuario,clave,nombre,apellido,rol)values('$usuario','$clave','$nombre','$apellido','$rol' ) ");
                         if ($sql) {
                           echo '<div class="alert alert-success">Producto registrado correctamente</div>';
                           # code...
@@ -220,15 +230,83 @@ include "conexion.php";
           </div>
           </form>
         </div>
+        <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              
+            <!-- /.card -->
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Manten el control de tus productos</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr class="bg-black">
+                    <th>Id</th>
+                    <th>Usuario</th>
+                    <th>Clave</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Rol</th>
+                    <th></th>
+                
+            
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    $sql = $conexion->query(" select * from productos ");
+                    while ($datos = $sql->fetch_object()) { ?>
+
+                   <tr>
+                    <td><?= $datos->id?></td>
+                    <td><?= $datos->usuario?></td>
+                    <td><?= $datos->clave?></td>
+                    <td><?= $datos->nombre?></td>
+                    <td><?= $datos->apellido?></td>
+                    <td><?= $datos->rol?></td>
+                   
+                      <td>
+                        <a href="http://127.0.0.1/proyectov/vistas/modulos/modificar.php?id=<?= $datos->id?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="http://127.0.0.1/proyectov/vistas/modulos/alta-producto.php?id=<?= $datos->id?>" class="btn btn-small btn-danger"><i class="fa-regular fa-rectangle-xmark"></i></a>
+                      </td>
+               
+                  </tr>
+                  
+                  <?php }
+
+                  ?>
+                  
+                  
+                  </tbody>
+           
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     </div>
 
+    <!-- /.card-body -->
   </div>
+  <!-- /.card -->
   </div>
+  <!--/.col (right) -->
   </div>
-  </div>
+  <!-- /.row -->
+  </div><!-- /.container-fluid -->
   </section>
+  <!-- /.content -->
   </div>
+  <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.2.0
@@ -237,8 +315,11 @@ include "conexion.php";
     derechos reservados.
   </footer>
 
+  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
   </aside>
+  <!-- /.control-sidebar -->
   </div>
 
   <script src="http://127.0.0.1/proyectov/vistas/plugins/jquery/jquery.min.js"></script>
@@ -259,6 +340,9 @@ include "conexion.php";
   <script src="http://127.0.0.1/proyectov/vistas/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
   <script src="http://127.0.0.1/proyectov/vistas/dist/js/adminlte.min.js"></script>
 
+  <script>
+
+  </script>
 </body>
 
 </html>
